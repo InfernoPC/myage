@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>My True Age</title>
+	<title>Tim Chen's Age</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
@@ -12,12 +12,28 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
   <script>
-		$( function() {
-    	$( "#datepicker" ).datepicker();
-		});
-		function showMyTrueAge(){
-			console.log("test");
-		}
+    setInterval(function () {
+			encrypt = window.location.search.substr(1);
+			decrypt = CryptoJS.AES.decrypt(encrypt, "SecretAge");
+			arg = decrypt.toString(CryptoJS.enc.Utf8);
+			year = parseInt(arg.substring(0, 4));
+			month = parseInt(arg.substring(4, 6));
+			day = parseInt(arg.substring(6, 8));
+      birthday = new Date(year, month, day);
+      now = new Date();
+
+			month_diff = 12 * (now.getFullYear() - birthday.getFullYear() - 18) + (now.getMonth() - birthday.getMonth());
+			day_diff = now.getDate() - birthday.getDate();
+			if(day_diff < 0){
+				month_diff -= 1;
+				day_diff += 31;
+			}
+      document.getElementById("M").innerHTML = month_diff;
+      document.getElementById("d").innerHTML = day_diff;
+      document.getElementById("h").innerHTML = now.getHours();
+      document.getElementById("m").innerHTML = now.getMinutes();
+      document.getElementById("s").innerHTML = now.getSeconds();
+    }, 500);
   </script>
 
   <style type="text/css">
@@ -26,7 +42,8 @@
 
   </head>
   <body>
-		<p>Date: <input type="text" id="datepicker"></p>
-		<button onclick="showMyTrueAge()">Click me</button>
+    <span id="y">18歲</span> <span id="M"></span>月 <span id="d"></span>天
+    <br>
+    <span id="h"></span>時 <span id="m"></span>分 <span id="s"></span>秒
   </body>
 </html>
