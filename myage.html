@@ -19,15 +19,29 @@
 			year = parseInt(arg.substring(0, 4));
 			month = parseInt(arg.substring(4, 6));
 			day = parseInt(arg.substring(6, 8));
-      birthday = new Date(year, month, day);
-      now = new Date();
+      max_date = [, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-			month_diff = 12 * (now.getFullYear() - birthday.getFullYear() - 18) + (now.getMonth() - birthday.getMonth());
+			birthday = new Date(year, month, day);
+      now = new Date();
+			
+			year_diff = now.getFullYear() - birthday.getFullYear();
+			month_diff = now.getMonth() - birthday.getMonth();
 			day_diff = now.getDate() - birthday.getDate();
+			
 			if(day_diff < 0){
 				month_diff -= 1;
-				day_diff += 31;
+				day_diff += max_date[month];
 			}
+			if(month_diff < 0){
+				year_diff -= 1;
+				month_diff += 12;
+			}
+			if(year_diff > 18){
+				month_diff += 12 * (year_diff - 18);
+				year_diff = 18;
+			}
+		
+      document.getElementById("y").innerHTML = year_diff;
       document.getElementById("M").innerHTML = month_diff;
       document.getElementById("d").innerHTML = day_diff;
       document.getElementById("h").innerHTML = now.getHours();
@@ -35,14 +49,9 @@
       document.getElementById("s").innerHTML = now.getSeconds();
     }, 500);
   </script>
-
-  <style type="text/css">
-
-  </style>
-
   </head>
   <body>
-    <span id="y">18歲</span> <span id="M"></span>月 <span id="d"></span>天
+    <span id="y"></span>歲 <span id="M"></span>月 <span id="d"></span>天
     <br>
     <span id="h"></span>時 <span id="m"></span>分 <span id="s"></span>秒
   </body>
