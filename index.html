@@ -13,11 +13,18 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
   <script>
 		$( function() {
-    	$( "#datepicker" ).datepicker();
+			$("#datepicker").datepicker({changeMonth: true, changeYear: true});
+			$("#datepicker").datepicker("option", "dateFormat", "yymmdd");
 		});
 		function showMyTrueAge(){
-			console.log("test");
+			birthday = $("#datepicker").val();
+			if(birthday != ""){
+				encrypt = CryptoJS.AES.encrypt(birthday, "SecretAge");
+				window.location.assign("myage.html?" + encrypt.toString());
+
+			}
 		}
+
   </script>
 
   <style type="text/css">
@@ -27,6 +34,6 @@
   </head>
   <body>
 		<p>Date: <input type="text" id="datepicker"></p>
-		<button onclick="showMyTrueAge()">Click me</button>
+		<button onclick="showMyTrueAge()">Go!</button>
   </body>
 </html>
